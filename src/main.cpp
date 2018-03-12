@@ -46,6 +46,7 @@ int main()
     if (length && length > 2 && data[0] == '4' && data[1] == '2')
     {
 
+      // cout << "WE HERE" << endl;
       auto s = hasData(std::string(data));
       if (s != "") {
       	
@@ -55,16 +56,16 @@ int main()
         
         if (event == "telemetry") {
           // j[1] is the data JSON object
-          
+          // cout << "WE HERE" << endl;
           string sensor_measurment = j[1]["sensor_measurement"];
           
           MeasurementPackage meas_package;
           istringstream iss(sensor_measurment);
-    	  long long timestamp;
+    	    long long timestamp;
 
-    	  // reads first element from the current line
-    	  string sensor_type;
-    	  iss >> sensor_type;
+    	    // reads first element from the current line
+    	    string sensor_type;
+    	    iss >> sensor_type;
 
     	  if (sensor_type.compare("L") == 0) {
       	  		meas_package.sensor_type_ = MeasurementPackage::LASER;
@@ -107,6 +108,7 @@ int main()
     	  ground_truth.push_back(gt_values);
           
           //Call ProcessMeasurment(meas_package) for Kalman filter
+        cout << "CALLING PROCESS MEAUSUREMENT" << endl;
     	  fusionEKF.ProcessMeasurement(meas_package);    	  
 
     	  //Push the current estimated x,y positon from the Kalman filter's state vector

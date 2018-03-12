@@ -16,8 +16,7 @@ VectorXd Tools::CalculateRMSE(const vector<VectorXd> &estimations,
 	int len;
 	VectorXd rmse(4);
 	len = estimations.size();
-	// cout << len << endl;
-	for(int i = 0; i < len; i++)
+	for(int i = 0; i < len; ++i)
 	{
 		VectorXd residual(len);
 		residual = estimations[i] - ground_truth[i];

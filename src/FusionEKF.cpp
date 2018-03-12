@@ -86,20 +86,22 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
               0, 0, 1, 0,
               0, 0, 0, 1;
 
-  ekf_.Q_ << (pow(del_t, 4) * noise_ax) / 4, 0, (pow(del_t, 3) * noise_ax) / 2, 0,
-              0, (pow(del_t, 4) * noise_ay) / 4, 0, (pow(del_t, 3) * noise_ay) / 2,
-              (pow(del_t, 3) * noise_ax) / 2, 0, (pow(del_t, 2) * noise_ax), 0,
-              0, (pow(del_t, 3) * noise_ay) / 2, 0, (pow(del_t, 2) * noise_ay);
+  float dt_4 = pow(del_t, 4);
+  float dt_3 = pow(del_t, 3);
+  float dt_2 = pow(del_t, 2);
 
-  if(del_t > 0.001)
-    ekf_.Predict();
+  ekf_.Q_ << (dt_4 * noise_ax) / 4, 0, (dt_3 * noise_ax) / 2, 0,
+              0, (dt_4 * noise_ay) / 4, 0, (dt_3 * noise_ay) / 2,
+              (dt_3 * noise_ax) / 2, 0, (dt_2 * noise_ax), 0,
+              0, (dt_3 * noise_ay) / 2, 0, (dt_2 * noise_ay);
+
+  ekf_.Predict();
 
 
   if (measurement_pack.sensor_type_ == MeasurementPackage::RADAR) {
     cout << "RADAR UPDATE" << endl;
-
-    ekf_.R_ = R_radar_;
     Hj_ = tools.CalculateJacobian(ekf_.x_);
+    ekf_.R_ = R_radar_;
     ekf_.H_ = Hj_;
     ekf_.UpdateEKF(measurement_pack.raw_measurements_);
   } 

@@ -17,8 +17,8 @@ FusionEKF::FusionEKF() {
   R_radar_ = MatrixXd(3, 3);
   H_laser_ = MatrixXd(2, 4);
   Hj_ = MatrixXd(3, 4);
-  noise_ax = 9;
-  noise_ay = 9;
+  noise_ax = 9.0;
+  noise_ay = 9.0;
 
   R_laser_ << 0.0225, 0,
         0, 0.0225;
@@ -78,6 +78,8 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
   // cout << "CALCULATE DEL_T" << endl;
   float del_t = (measurement_pack.timestamp_ - previous_timestamp_)/1000000.0;
 
+  if(del_t > 0.001){
+
   previous_timestamp_ = measurement_pack.timestamp_;
   // cout << "TIME: " << del_t << endl;
 
@@ -116,4 +118,5 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
   cout << "x_ = " << ekf_.x_ << endl;
   cout << "P_ = " << ekf_.P_ << endl;
   cout << "END OF FUSIONEKF.CPP" << endl;
+}
 }

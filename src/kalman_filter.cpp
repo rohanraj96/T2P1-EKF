@@ -70,8 +70,8 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
     py = 0.001;
 
   float rho = sqrt(pow(px, 2) + pow(py, 2));
-  float phi = atan((sign_y * py)/(sign_x * px));
-  float rho_dot = ((sign_x * px * vx) + (sign_y * py * vy)) / rho;
+  float phi = atan((py)/(px));
+  float rho_dot = ((px * vx) + (py * vy)) / rho;
 
   // phi = phi_norm(phi);
   x_transform[0] = rho;

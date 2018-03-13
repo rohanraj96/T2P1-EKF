@@ -43,18 +43,22 @@ MatrixXd Tools::CalculateJacobian(const VectorXd& x_state)
   	return jacobian;
   }
 
-  float a11, a12, a21, a22, a31, a32;
-  a11 = px / sqrt(pow(px, 2) + pow(py, 2));
-  a12 = py / sqrt(pow(px, 2) + pow(py, 2));
-  a21 = (-py) / (pow(px, 2) + pow(py, 2));
-  a22 = (px) / (pow(px, 2) + pow(py, 2));
-  a31 = (py*((vx*py) - (vy*px))) / pow((pow(px, 2) + pow(py, 2)), 1.5);
-  a32 = (px*((vy*px) - (vx*py))) / pow((pow(px, 2) + pow(py, 2)), 1.5);
-  // a33 and a34 are same as a11 and a12
+  float c1 = px*px + py*py;
+  float c2 = sqrt(c1);
+  float c3 = (c1*c2);
 
-  jacobian << a11, a12, 0, 0,
-  				a21, a22, 0, 0,
-  				a31, a32, a11, a12;
+  // float a11, a12, a21, a22, a31, a32;
+  // a11 = px / sqrt(pow(px, 2) + pow(py, 2));
+  // a12 = py / sqrt(pow(px, 2) + pow(py, 2));
+  // a21 = (-py) / (pow(px, 2) + pow(py, 2));
+  // a22 = (px) / (pow(px, 2) + pow(py, 2));
+  // a31 = (py*((vx*py) - (vy*px))) / pow((pow(px, 2) + pow(py, 2)), 1.5);
+  // a32 = (px*((vy*px) - (vx*py))) / pow((pow(px, 2) + pow(py, 2)), 1.5);
+  // // a33 and a34 are same as a11 and a12
+
+  jacobian << (px/c2), (py/c2), 0, 0,
+  				-(py/c1), (px/c1), 0, 0,
+  				py*(vx*py - vy*px)/c3, px*(px*vy - py*vx)/c3, px/c2, py/c2;
 
   return jacobian;
 }

@@ -40,14 +40,14 @@ void KalmanFilter::Update(const VectorXd &z) {
 
 float phi_norm(float phi)
 {
-  // float tan_theta = tan(phi);
-  // return atan(tan_theta) * 2;
-  const float Max = M_PI;
-  const float Min = -M_PI;
+  float tan_theta = tan(phi);
+  return atan(tan_theta) * 2;
+  // const float Max = M_PI;
+  // const float Min = -M_PI;
 
-  return phi < Min
-    ? Max + std::fmod(phi - Min, Max - Min)
-    : std::fmod(phi - Min, Max - Min) + Min;
+  // return phi < Min
+    // ? Max + std::fmod(phi - Min, Max - Min)
+    // : std::fmod(phi - Min, Max - Min) + Min;
 }
 
 void KalmanFilter::UpdateEKF(const VectorXd &z) {
@@ -61,16 +61,11 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
   float vx = x_[2];
   float vy = x_[3];
 
-  int sign_x = px / fabs(px);
-  int sign_y = py / fabs(py);
-
-  if(fabs(px <= 0.001))
-    px = 0.001;
-  if(fabs(py <= 0.001))
-    py = 0.001;
 
   float rho = sqrt(pow(px, 2) + pow(py, 2));
-  float phi = atan((py)/(px));
+  float phi = atan2(py,px);
+  if(rho < 0.001)
+    rho = 0.001;
   float rho_dot = ((px * vx) + (py * vy)) / rho;
 
   // phi = phi_norm(phi);

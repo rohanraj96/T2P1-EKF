@@ -42,12 +42,6 @@ float phi_norm(float phi)
 {
   float tan_theta = tan(phi);
   return atan(tan_theta) * 2;
-  // const float Max = M_PI;
-  // const float Min = -M_PI;
-
-  // return phi < Min
-    // ? Max + std::fmod(phi - Min, Max - Min)
-    // : std::fmod(phi - Min, Max - Min) + Min;
 }
 
 void KalmanFilter::UpdateEKF(const VectorXd &z) {
